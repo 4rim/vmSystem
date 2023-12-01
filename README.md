@@ -20,7 +20,7 @@ cd vmSystem && make
 ```
 Run
 ```
-chmod +x vm.sh
+chmod +x vm
 ```
 to give the file executable permissions, and then the usual `./vm`. If you
 want to run the zshell script for some reason, you can run:

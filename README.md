@@ -18,12 +18,12 @@ Simply clone this git repo to your local machine, and run:
 ```
 cd vmSystem && make
 ```
-Run
+to create the executable. If you want to run the zshell script for some reason,
+run
 ```
-chmod +x vm
+chmod +x vm.sh
 ```
-to give the file executable permissions, and then the usual `./vm`. If you
-want to run the zshell script for some reason, you can run:
+to give the file executable permissions. Then run
 ```
 zsh vm.sh
 ```

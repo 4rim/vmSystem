@@ -37,7 +37,7 @@ int main(void) {
 	
 	while (true) {
 		printf("What are you trying to find? Enter the corresponding number in"
-				"brackets:\n");
+				" brackets:\n");
 		printf("- Levels [1]\n- Level Indices [2]\n- Max PM [3]\n- Max VM [4]"
 				"\n- Total # PTEs [5]\n- # PTEs per page [6]\n");
 		

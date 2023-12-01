@@ -7,7 +7,7 @@
  * in the right places and that unintended changes aren't bleeding into other
  * cases.
  * Add assert statements or error handling so we don't have unreasonable inputs
- * (e.g. VAS being smaller than VPN)
+ * (e.g. VAS being smaller than VPN, negative inputs, etc)
  */
 
 #include <stdio.h>
@@ -32,7 +32,7 @@ int main(void) {
 	printf("Note: this program takes input in terms of bits, NOT bytes/"
 			"kilobytes/megabytes, etc.\n");
 	printf("It only outputs Max PM and Max VM in terms of bytes.\n");
-	printf("This program assumes you know the basic info of the VM system "
+	printf("This program assumes you are given the basic info of the VM system "
 			"(VAS, VPN, PAS, PPN)\n");
 	
 	while (true) {

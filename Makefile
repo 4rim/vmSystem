@@ -1,8 +1,9 @@
-$CFLAGS=-Wall -Wpedantic -C11 -g
-$CC=clang
+CFLAGS = -Wall -Wpedantic -std=c11 -g
+CC = clang
 
 vm: vm.c
-	$(CC) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
 
 clean:
-	rm vm
+	rm -f vm
+	rm -rf *.dSYM

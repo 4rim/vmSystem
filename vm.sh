@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+# This is very much a WIP and a secondary alternative to the vm.c
+# file/executable. You should probably Make and run that instead.
+
+echo 'Note: this program does NOT have full functionality!'
 echo 'This program takes some parameters to a virtual memory setup and outputs important metrics, so that you can test your understanding.'
 echo 'First, enter the size of the virtual address space:'
 read sizeVAS

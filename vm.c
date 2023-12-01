@@ -45,6 +45,9 @@ int main(void) {
 
 		switch (ans) {
 			case 1: // Find levels
+				printf("You must supply either both VAS and VPN, or PAS and "
+						"PPN. You must supply the PTE.\n\n");
+
 				printf("Enter the size of the PAS: \n");
 				getinput(&sizePAS);
 
@@ -70,16 +73,21 @@ int main(void) {
 					sizeVPN = sizeVAS - pageOffset;
 				}
 
-				printf("Enter the size of the PTE: \n");
+				printf("Enter the size of the PTE: \n\n");
 				getinput(&sizePTE);
 
 				int pgSizeBytes = sizePTE / 8;
+				printf("Page size in bytes = %d\n", pgSizeBytes);
+
 				int logPgSize = log2(pgSizeBytes);
+				printf("Page size (bytes) in terms of 2^n = %d\n", logPgSize);
 
 				int expNumPTE = pageOffset - logPgSize;
+				printf("# of PTEs in a table in terms of 2^n = %d\n", expNumPTE);
 	
 				int numLevels = ceil((double)sizeVPN/(double)expNumPTE);
-				printf("Levels = %d\n", numLevels);
+				printf("Levels = ceil(size of VPN/# of PTES in terms of 2^n) "
+						"= %d\n", numLevels);
 					
 				break;
 

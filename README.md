@@ -13,7 +13,7 @@ script that is supposed to do pretty much the same thing (written for zsh).
 
 ## Installing and building
 
-Simply download this git repo to your local machine, and run:
+Simply clone this git repo to your local machine, and run:
 
 ```
 cd vmSystem && make

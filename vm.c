@@ -76,11 +76,11 @@ int main(void) {
 				printf("Enter the size of the PTE: \n\n");
 				getinput(&sizePTE);
 
-				int pgSizeBytes = sizePTE / 8;
-				printf("Page size in bytes = %d\n", pgSizeBytes);
+				int pteSizeBytes = ceil((double)sizePTE / 8.);
+				printf("PTE size in bytes = %d\n", pteSizeBytes);
 
-				int logPgSize = log2(pgSizeBytes);
-				printf("Page size (bytes) in terms of 2^n = %d\n", logPgSize);
+				int logPgSize = ceil(log2(pteSizeBytes));
+				printf("PTE size (bytes) in terms of 2^n = %d\n", logPgSize);
 
 				int expNumPTE = pageOffset - logPgSize;
 				printf("# of PTEs in a table in terms of 2^n = %d\n", expNumPTE);
@@ -116,8 +116,8 @@ int main(void) {
 				printf("Enter the size of the PTE: \n");
 				getinput(&sizePTE);
 
-				pgSizeBytes = sizePTE / 8;
-				int indices = pageOffset - log2(pgSizeBytes);
+				pteSizeBytes = ceil((double)sizePTE / 8.);
+				int indices = pageOffset - log2(pteSizeBytes);
 				printf("Indices = %d\n", indices);
 
 				break;
@@ -222,8 +222,8 @@ int main(void) {
 				printf("Enter the size of the PTE: \n");
 				getinput(&sizePTE);
 
-				pgSizeBytes = sizePTE / 8;
-				logPgSize = log2(pgSizeBytes);
+				pteSizeBytes = ceil((double)sizePTE / 8.);
+				logPgSize = ceil(log2(pteSizeBytes));
 
 				expNumPTE = pageOffset - logPgSize;
 				printf("PTEs per page = %.0f\n", pow(2, (expNumPTE + 1)));

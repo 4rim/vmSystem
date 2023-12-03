@@ -20,14 +20,15 @@ char buf[256];
 char *ptr;
 
 void getinput(int *);
-int findVPN(int, int, int);
-int findPPN(int, int, int);
-int findPageOffset(int, int);
+int findvpn(int, int, int);
+int findppn(int, int, int);
+int findoffset(int, int);
 
-int main(void) {
+int main(void)
+{
 	int ans;
-	int sizeVAS = 0, sizeVPN = 0, sizePAS = 0, sizePPN = 0, sizePTE = 0;
-	int pageOffset, sizeVM, sizePM;
+	int sizeVAS, sizeVPN, sizePAS, sizePPN, sizePTE;
+	int offset, sizeVM, sizePM;
 
 	printf("Note: this program takes input in terms of bits, NOT bytes/"
 			"kilobytes/megabytes, etc.\n");
@@ -35,7 +36,7 @@ int main(void) {
 	printf("This program assumes you are given the basic info of the VM system "
 			"(VAS, VPN, PAS, PPN)\n");
 	
-	while (true) {
+	while (true){
 		printf("What are you trying to find? Enter the corresponding number in"
 				" brackets:\n");
 		printf("- Levels [1]\n- Level Indices [2]\n- Max PM [3]\n- Max VM [4]"
@@ -43,7 +44,7 @@ int main(void) {
 		
 		getinput(&ans);
 
-		switch (ans) {
+		switch (ans){
 			case 1: // Find levels
 				printf("You must supply either both VAS and VPN, or PAS and "
 						"PPN. You must supply the PTE.\n\n");
@@ -60,18 +61,16 @@ int main(void) {
 				printf("Enter the size of the VPN: \n");
 				getinput(&sizeVPN);
 				
-				if (sizePAS && sizePPN) {
-					pageOffset = findPageOffset(sizePAS, sizePPN);
-				} else if (sizeVAS && sizeVPN) {
-					pageOffset = findPageOffset(sizeVAS, sizeVPN);
-				} else {
+				if (sizePAS && sizePPN)
+					offset = findoffset(sizePAS, sizePPN);
+				else if (sizeVAS && sizeVPN)
+					offset = findoffset(sizeVAS, sizeVPN);
+				else 
 					fprintf(stderr, "You must supply either both VAS and VPN, "
 							"or PAS and PPN.\n");
-				}
 
-				if (!sizeVPN) {
-					sizeVPN = sizeVAS - pageOffset;
-				}
+				if (!sizeVPN)
+					sizeVPN = sizeVAS - offset;
 
 				printf("Enter the size of the PTE: \n\n");
 				getinput(&sizePTE);
@@ -82,7 +81,7 @@ int main(void) {
 				int logPgSize = ceil(log2(pteSizeBytes));
 				printf("PTE size (bytes) in terms of 2^n = %d\n", logPgSize);
 
-				int expNumPTE = pageOffset - logPgSize;
+				int expNumPTE = offset - logPgSize;
 				printf("# of PTEs in a table in terms of 2^n = %d\n", expNumPTE);
 	
 				int numLevels = ceil((double)sizeVPN/(double)expNumPTE);
@@ -104,41 +103,39 @@ int main(void) {
 				printf("Enter the size of the VPN: \n");
 				getinput(&sizeVPN);
 				
-				if (sizePAS && sizePPN) {
-					pageOffset = findPageOffset(sizePAS, sizePPN);
-				} else if (sizeVAS && sizeVPN) {
-					pageOffset = findPageOffset(sizeVAS, sizeVPN);
-				} else {
+				if (sizePAS && sizePPN)
+					offset = findoffset(sizePAS, sizePPN);
+				else if (sizeVAS && sizeVPN)
+					offset = findoffset(sizeVAS, sizeVPN);
+				else
 					fprintf(stderr, "You must supply either both VAS and VPN, "
 							"or PAS and PPN.\n");
-				}
-
+				
 				printf("Enter the size of the PTE: \n");
 				getinput(&sizePTE);
 
 				pteSizeBytes = ceil((double)sizePTE / 8.);
-				int indices = pageOffset - log2(pteSizeBytes);
+				int indices = offset - log2(pteSizeBytes);
 				printf("Indices = %d\n", indices);
-
 				break;
 			
 			case 3: // Find max PM
 				printf("Enter the size of the PAS: \n");
 				getinput(&sizePAS);
 				
-				if (sizePAS >= 40) {
+				if (sizePAS >= 40){
 					int ones = sizePAS - 40;
 					sizePM = pow(2., ones);
 					printf("Max PM = %dTB\n", sizePM);
-				} else if (sizePAS >= 30) {
+				} else if (sizePAS >= 30){
 					int ones = sizePAS - 30;
 					sizePM = pow(2., ones);
 					printf("Max PM = %dGB\n", sizePM);
-				} else if (sizePAS >= 20) {
+				} else if (sizePAS >= 20){
 					int ones = sizePAS - 20;
 					sizePM = pow(2., ones);
 					printf("Max PM = %dMB\n", sizePM);
-				} else if (sizePAS >= 10) {
+				} else if (sizePAS >= 10){
 					int ones = sizePAS - 10;
 					sizePM = pow(2., ones);
 					printf("Max PM = %dKB\n", sizePM);
@@ -148,19 +145,19 @@ int main(void) {
 			case 4: // Find max VM
 					printf("Enter the size of the VAS: \n");
 					getinput(&sizeVAS);
-				if (sizeVAS >= 40) {
+				if (sizeVAS >= 40){
 					int ones = sizeVAS - 40;
 					sizeVM = pow(2., ones);
 					printf("Max VM = %dTB\n", sizeVM);
-				} else if (sizeVAS >= 30) {
+				} else if (sizeVAS >= 30){
 					int ones = sizeVAS - 30;
 					sizeVM = pow(2., ones);
 					printf("Max VM = %dGB\n", sizeVM);
-				} else if (sizeVAS >= 20) {
+				} else if (sizeVAS >= 20){
 					int ones = sizeVAS - 20;
 					sizeVM = pow(2., ones);
 					printf("Max VM = %dMB\n", sizeVM);
-				} else if (sizeVAS >= 10) {
+				} else if (sizeVAS >= 10){
 					int ones = sizeVAS - 10;
 					sizeVM = pow(2., ones);
 					printf("Max VM = %dKB\n", sizeVM);
@@ -180,20 +177,18 @@ int main(void) {
 				printf("Enter the size of the VPN: \n");
 				getinput(&sizeVPN);
 				
-				if (sizePAS && sizePPN) {
-					pageOffset = findPageOffset(sizePAS, sizePPN);
-				} else if (sizeVAS && sizeVPN) {
-					pageOffset = findPageOffset(sizeVAS, sizeVPN);
-				} else {
+				if (sizePAS && sizePPN)
+					offset = findoffset(sizePAS, sizePPN);
+				else if (sizeVAS && sizeVPN)
+					offset = findoffset(sizeVAS, sizeVPN);
+				else
 					fprintf(stderr, "You must supply either both VAS and VPN, "
 							"or PAS and PPN.\n");
-				}
 
-				if (!sizeVPN) {
-					sizeVPN = sizeVAS - pageOffset;
-				}
+				if (!sizeVPN)
+					sizeVPN = sizeVAS - offset;
 
-				int totalNumPTE = pow(2, sizeVPN - pageOffset);
+				int totalNumPTE = pow(2, sizeVPN - offset);
 				printf("# of PTEs = %d\n", totalNumPTE);
 				break;
 
@@ -210,14 +205,13 @@ int main(void) {
 				printf("Enter the size of the VPN: \n");
 				getinput(&sizeVPN);
 				
-				if (sizePAS && sizePPN) {
-					pageOffset = findPageOffset(sizePAS, sizePPN);
-				} else if (sizeVAS && sizeVPN) {
-					pageOffset = findPageOffset(sizeVAS, sizeVPN);
-				} else {
+				if (sizePAS && sizePPN)
+					offset = findoffset(sizePAS, sizePPN);
+				else if (sizeVAS && sizeVPN)
+					offset = findoffset(sizeVAS, sizeVPN);
+				else
 					fprintf(stderr, "You must supply either both VAS and VPN,"
 							"or PAS and PPN.\n");
-				}
 
 				printf("Enter the size of the PTE: \n");
 				getinput(&sizePTE);
@@ -225,7 +219,7 @@ int main(void) {
 				pteSizeBytes = ceil((double)sizePTE / 8.);
 				logPgSize = ceil(log2(pteSizeBytes));
 
-				expNumPTE = pageOffset - logPgSize;
+				expNumPTE = offset - logPgSize;
 				printf("PTEs per page = %.0f\n", pow(2, (expNumPTE + 1)));
 				break;
 
@@ -233,56 +227,58 @@ int main(void) {
 				fprintf(stderr, "Not a valid answer. Must be in [1,7].\n");
 				printf("Quit program? (y/n)\n");
 				fgets(buf, sizeof(buf), stdin);
-				if (buf[0] == 'y') {
+				if (buf[0] == 'y')
 					exit(0);
-				} else continue;
+				else continue;
 		} 
 		printf("Done! Quit program? (y/n)\n");
 		fgets(buf, sizeof(buf), stdin);
-		if (buf[0] == 'y') {
+		if (buf[0] == 'y')
 			exit(0);
-		} else continue;
-
+		else continue;
 	}
 	return 0;
 }
 
-void getinput(int *metric) {
-	if(fgets(buf, sizeof(buf), stdin) != NULL) {
+void getinput(int *metric)
+{
+	if(fgets(buf, sizeof(buf), stdin) != NULL)
 		*metric = strtod(buf, &ptr);
-	}
 }
 
-int findVPN(int VAS, int PAS, int PPN) {
-	int pgOffset;
-	if (PAS != 0) {
-		pgOffset = PAS - PPN;
-	} else {
+int findvpn(int VAS, int PAS, int PPN)
+{
+	int offset;
+	if (PAS != 0)
+		offset = PAS - PPN;
+	else {
 		fprintf(stderr, "You must input a non-zero PAS.\n");
 		return -1;
 	}
-	if (!VAS) {
+	if (!VAS){
 		fprintf(stderr, "You must input a non-zero VAS.\n");
 		return -1;
 	}
-	return VAS - pgOffset;
+	return VAS - offset;
 }
 
-int findPageOffset(int AS, int PN) {
+int findoffset(int AS, int PN)
+{
 	return AS - PN;
 }
 
-int findPPN(int VAS, int PAS, int VPN) {
-	int pgOffset;
-	if (PAS != 0) {
-		pgOffset = VAS - VPN;
-	} else {
+int findppn(int VAS, int PAS, int VPN)
+{
+	int offset;
+	if (PAS != 0)
+		offset = VAS - VPN;
+	else {
 		fprintf(stderr, "You must input a non-zero PAS.\n");
 		return -1;
 	}
-	if (!VAS) {
+	if (!VAS){
 		fprintf(stderr, "You must input a non-zero VAS.\n");
 		return -1;
 	}
-	return PAS - pgOffset;
+	return PAS - offset;
 }
